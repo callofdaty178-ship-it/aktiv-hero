@@ -1,0 +1,31 @@
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #111;
+  color: #fff;
+  text-align: center;
+}
+main {
+  max-width: 700px;
+  margin: auto;
+  padding: 1rem;
+}
+video, canvas {
+  width: 100%;
+  max-width: 700px;
+  border-radius: 8px;
+  margin-top: 1rem;
+  background: #000;
+}
+.hud {
+  margin-top: 1rem;
+}
+button {
+  padding: .6rem 1.2rem;
+  border: 0;
+  border-radius: 6px;
+  background: #4caf50;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
