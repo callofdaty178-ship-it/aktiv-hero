@@ -29,3 +29,7 @@ button {
   font-weight: bold;
   cursor: pointer;
 }
+.hud { margin-top: 1rem; display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap; }
+button { padding:.6rem 1.2rem; border:0; border-radius:6px; background:#4caf50; color:#fff; font-weight:700; cursor:pointer; }
+button#fsBtn { background:#3f51b5; }     /* Vollbild */
+button#shotBtn { background:#ff9800; }   /* Foto speichern */
