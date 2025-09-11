@@ -33,3 +33,105 @@
   <button id="fsBtn"    title="Vollbild umschalten">Vollbild</button>
   <button id="shotBtn"  title="Aktuelles Bild speichern">Foto speichern</button>
 </div>
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Abenteuer des Aktiv-Helden</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- TensorFlow.js + Pose Detection (MoveNet) -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose"></script>
+</head>
+<body>
+  <main>
+    <h1>Abenteuer des Aktiv-Helden</h1>
+
+    <div class="toolbar">
+      <button id="startBtn">Start</button>
+      <button id="switchMoveBtn">Übung wechseln</button>
+      <button id="settingsBtn">Einstellungen</button>
+    </div>
+
+    <video id="video" autoplay playsinline></video>
+    <canvas id="overlay"></canvas>
+
+    <div class="hud">
+      <div>Übung: <span id="moveName">Jumping Jacks</span></div>
+      <div>Zähler: <span id="counter">0</span></div>
+      <div>Punkte: <span id="score">0</span></div>
+    </div>
+
+    <!-- Badge-Anzeige -->
+    <div id="badges" class="badges" aria-live="polite"></div>
+
+    <!-- Fortschritt (7 Tage) -->
+    <section class="weekly">
+      <h2>Wöchentlicher Fortschritt (letzte 7 Tage)</h2>
+      <table id="weeklyTable" class="weekly-table" aria-label="Wöchentlicher Fortschritt">
+        <thead>
+          <tr>
+            <th>Datum</th>
+            <th>Wiederholungen</th>
+            <th>Punkte</th>
+          </tr>
+        </thead>
+        <tbody><!-- wird per JS gefüllt --></tbody>
+      </table>
+    </section>
+
+    <!-- Toast -->
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <!-- kurzer Sound bei Badge (optional) -->
+    <audio id="badgeSound" preload="auto">
+      <!-- Du kannst hier eine eigene MP3 referenzieren -->
+    </audio>
+  </main>
+
+  <!-- Einstellungen (Modal) -->
+  <dialog id="settingsModal">
+    <form method="dialog" class="settings-form">
+      <h3>Einstellungen</h3>
+
+      <!-- ✨ Alle Labels/Platzhalter auf Deutsch, damit Copilot die Logik gut ergänzt -->
+      <fieldset>
+        <legend>Allgemein</legend>
+        <label>
+          Mindestkonfidenz (0.0–1.0)
+          <input type="number" id="confThreshold" step="0.05" min="0" max="1" />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Jumping Jacks</legend>
+        <label>
+          Mindestabstand Knöchel (Pixel)
+          <input type="number" id="jjAnkleDist" step="5" min="40" max="240" />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Squat</legend>
+        <label>
+          Winkel „down“ (&lt;=)
+          <input type="number" id="squatDownDeg" step="1" min="60" max="150" />
+        </label>
+        <label>
+          Winkel „up“ (&gt;=)
+          <input type="number" id="squatUpDeg" step="1" min="120" max="180" />
+        </label>
+      </fieldset>
+
+      <menu>
+        <button value="cancel">Abbrechen</button>
+        <button id="saveSettingsBtn" value="default">Speichern</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <script src="game.js"></script>
+</body>
+</html>
