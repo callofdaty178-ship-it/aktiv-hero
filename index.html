@@ -27,3 +27,34 @@
   <script src="game.js"></script>
 </body>
 </html>
+<header class="topbar">
+  <a class="brand" href="./" aria-label="WAT gesund Startseite">
+    <picture>
+      <!-- WebP für moderne Browser -->
+      <source
+        type="image/webp"
+        srcset="
+          assets/logo/watgesund-256.webp 256w,
+          assets/logo/watgesund-384.webp 384w,
+          assets/logo/watgesund-512.webp 512w,
+          assets/logo/watgesund-768.webp 768w"
+        sizes="(max-width: 640px) 180px, 240px" />
+      <!-- JPG als Fallback -->
+      <img
+        src="assets/logo/watgesund-384.jpg"
+        srcset="
+          assets/logo/watgesund-256.jpg 256w,
+          assets/logo/watgesund-384.jpg 384w,
+          assets/logo/watgesund-512.jpg 512w,
+          assets/logo/watgesund-768.jpg 768w"
+        sizes="(max-width: 640px) 180px, 240px"
+        alt="WAT gesund Logo"
+        class="brand__img"
+        decoding="async"
+        loading="eager"
+        fetchpriority="high" />
+    </picture>
+  </a>
+
+  <nav class="status" id="status">Bereit</nav>
+</header>
