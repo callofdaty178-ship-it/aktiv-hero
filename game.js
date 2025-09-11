@@ -2,19 +2,21 @@ let videoEl, canvas, ctx;
 let mediaStream = null;
 let captureCount = 0;
 let running = false;
-const statusEl = () => document.getElementById('status');
-const hintEl = () => document.getElementById('hint');
-const fallback = () => document.getElementById('downloadFallback');
 
-function uiRunning(on){
-  document.getElementById('startBtn').disabled = on;
-  document.getElementById('stopBtn').disabled  = !on;
-  document.getElementById('shotBtn').disabled  = !on;
-  statusEl().textContent = on ? 'Kamera aktiv' : 'Bereit';
+const statusEl   = () => document.getElementById('status');
+const hintEl     = () => document.getElementById('hint');
+const fallbackEl = () => document.getElementById('downloadFallback');
+
+function setUI(runningOn){
+  document.getElementById('startBtn').disabled = runningOn;
+  document.getElementById('stopBtn').disabled  = !runningOn;
+  document.getElementById('shotBtn').disabled  = !runningOn;
+  statusEl().textContent = runningOn ? 'Kamera aktiv' : 'Bereit';
 }
 
-async function setupCamera() {
-  if (running) return;
+/* Kamera starten */
+async function setupCamera(){
+  if(running) return;
   try{
     videoEl = document.getElementById('video');
     mediaStream = await navigator.mediaDevices.getUserMedia({
@@ -25,12 +27,12 @@ async function setupCamera() {
     await videoEl.play();
 
     canvas = document.getElementById('overlay');
-    canvas.width = videoEl.videoWidth || 1280;
+    canvas.width  = videoEl.videoWidth  || 1280;
     canvas.height = videoEl.videoHeight || 720;
     ctx = canvas.getContext('2d');
 
     running = true;
-    uiRunning(true);
+    setUI(true);
     hintEl().style.display = 'none';
     loop();
   }catch(err){
@@ -39,75 +41,75 @@ async function setupCamera() {
   }
 }
 
-function stopCamera() {
-  if (!running) return;
-  if (mediaStream){ mediaStream.getTracks().forEach(t => t.stop()); mediaStream = null; }
-  if (videoEl){ videoEl.pause(); videoEl.srcObject = null; }
-  if (ctx && canvas){ ctx.clearRect(0,0,canvas.width,canvas.height); }
+/* Kamera stoppen */
+function stopCamera(){
+  if(!running) return;
+  if(mediaStream){ mediaStream.getTracks().forEach(t=>t.stop()); mediaStream=null; }
+  if(videoEl){ videoEl.pause(); videoEl.srcObject=null; }
+  if(ctx && canvas){ ctx.clearRect(0,0,canvas.width,canvas.height); }
   running = false;
-  uiRunning(false);
+  setUI(false);
   hintEl().style.display = '';
 }
 
-function toggleFullscreen() {
+/* Vollbild */
+function toggleFullscreen(){
   const el = document.documentElement;
-  if (!document.fullscreenElement) {
-    if (el.requestFullscreen) el.requestFullscreen();
-    else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-    else if (videoEl && videoEl.webkitEnterFullscreen) videoEl.webkitEnterFullscreen();
-  } else {
-    if (document.exitFullscreen) document.exitFullscreen();
-    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+  if(!document.fullscreenElement){
+    if(el.requestFullscreen) el.requestFullscreen();
+    else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+    else if(videoEl && videoEl.webkitEnterFullscreen) videoEl.webkitEnterFullscreen();
+  }else{
+    if(document.exitFullscreen) document.exitFullscreen();
+    else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
   }
 }
 
-function downloadSnapshot() {
-  if (!canvas) return;
+/* Foto speichern (PNG) mit Zähler + Zeitstempel */
+function downloadSnapshot(){
+  if(!canvas) return;
 
-  const temp = document.createElement('canvas');
-  temp.width = canvas.width;
-  temp.height = canvas.height;
-  const tctx = temp.getContext('2d');
+  const tmp = document.createElement('canvas');
+  tmp.width = canvas.width; tmp.height = canvas.height;
+  const tctx = tmp.getContext('2d');
 
-  // Mirror-Effekt beibehalten: wir kopieren das Canvas (bereits gespiegelt)
+  // Canvas ist already gespiegelt → direkt kopieren
   tctx.drawImage(canvas, 0, 0);
 
   captureCount += 1;
   const stamp = new Date().toLocaleString();
-  const pad = 16, h = 56, w = Math.min(temp.width * .8, 560);
-  tctx.font = Math.max(18, Math.round(temp.width * 0.03)) + 'px sans-serif';
+  const pad = 16, h = 56, w = Math.min(tmp.width * .8, 560);
+  tctx.font = Math.max(18, Math.round(tmp.width * .03)) + 'px system-ui, sans-serif';
   tctx.fillStyle = 'rgba(0,0,0,.55)';
-  tctx.fillRect(pad, temp.height - h - pad, w, h);
+  tctx.fillRect(pad, tmp.height - h - pad, w, h);
   tctx.fillStyle = '#fff';
-  tctx.fillText(`Bild #${captureCount} • ${stamp}`, pad + 12, temp.height - pad - 18);
+  tctx.fillText(`Bild #${captureCount} • ${stamp}`, pad + 12, tmp.height - pad - 18);
 
   try{
-    const url = temp.toDataURL('image/png');
+    const url = tmp.toDataURL('image/png');
     const a = document.createElement('a');
-    const fnameTime = stamp.replace(/[/,: ]+/g, '-');
-    a.href = url;
-    a.download = `wat-gesund-${captureCount}-${fnameTime}.png`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    const fname = stamp.replace(/[/,: ]+/g,'-');
+    a.href = url; a.download = `aktiv-hero-${captureCount}-${fname}.png`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
   }catch(e){
-    const url = temp.toDataURL('image/png');
-    fallback().innerHTML = `<a href="${url}" target="_blank">Bild öffnen (lange drücken zum Sichern)</a>`;
+    // iOS Fallback: Link anzeigen
+    const url = tmp.toDataURL('image/png');
+    fallbackEl().innerHTML = `<a href="${url}" target="_blank">Bild öffnen (lange drücken zum Sichern)</a>`;
   }
 }
 
-function loop() {
-  if (!running) return;
+/* Render-Loop – wie Spiegel (Selfie) */
+function loop(){
+  if(!running) return;
   const w = canvas.width, h = canvas.height;
-  // Spiegeln (wie ein Selfie)
   ctx.save();
-  ctx.translate(w, 0);
-  ctx.scale(-1, 1);
+  ctx.translate(w, 0); ctx.scale(-1, 1); // spiegeln
   ctx.drawImage(videoEl, 0, 0, w, h);
   ctx.restore();
   requestAnimationFrame(loop);
 }
 
+/* Buttons anschließen */
 document.getElementById('startBtn').onclick = setupCamera;
 document.getElementById('stopBtn').onclick  = stopCamera;
 document.getElementById('fsBtn').onclick    = toggleFullscreen;
