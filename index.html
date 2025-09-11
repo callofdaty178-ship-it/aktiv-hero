@@ -3,58 +3,96 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>WAT gesund – Aktiv Hero Kamera</title>
+  <title>Aktiv Hero – WAT gesund</title>
+  <meta name="description" content="Aktiv Hero – eine wunderschöne, kreative Demo-App von WAT gesund. Nutzt die Kamera direkt im Browser.">
   <link rel="stylesheet" href="styles.css" />
+  <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="512x512" href="assets/logo/favicon-512.png">
   <link rel="apple-touch-icon" sizes="512x512" href="assets/logo/favicon-512.png">
 </head>
 <body>
+  <!-- Topbar mit Logo -->
   <header class="topbar">
     <a class="brand" href="./" aria-label="WAT gesund Startseite">
       <picture>
-        <source
-          type="image/webp"
-          srcset="assets/logo/watgesund-256.webp 256w, assets/logo/watgesund-384.webp 384w, assets/logo/watgesund-512.webp 512w, assets/logo/watgesund-768.webp 768w"
+        <source type="image/webp"
+          srcset="
+            assets/logo/watgesund-256.webp 256w,
+            assets/logo/watgesund-384.webp 384w,
+            assets/logo/watgesund-512.webp 512w,
+            assets/logo/watgesund-768.webp 768w"
           sizes="(max-width: 640px) 180px, 240px" />
-        <img
+        <img class="brand__img" alt="WAT gesund Logo"
           src="assets/logo/watgesund-384.jpg"
-          srcset="assets/logo/watgesund-256.jpg 256w, assets/logo/watgesund-384.jpg 384w, assets/logo/watgesund-512.jpg 512w, assets/logo/watgesund-768.jpg 768w"
+          srcset="
+            assets/logo/watgesund-256.jpg 256w,
+            assets/logo/watgesund-384.jpg 384w,
+            assets/logo/watgesund-512.jpg 512w,
+            assets/logo/watgesund-768.jpg 768w"
           sizes="(max-width: 640px) 180px, 240px"
-          alt="WAT gesund Logo"
-          class="brand__img"
-          decoding="async"
-          loading="eager"
-          fetchpriority="high" />
+          decoding="async" loading="eager" fetchpriority="high">
       </picture>
     </a>
-    <nav class="status" id="status">Bereit</nav>
+    <nav id="status" class="status">Bereit</nav>
   </header>
 
+  <!-- Hero-Text -->
+  <section class="hero">
+    <h1>Aktiv Hero 🎮🏃‍♂️</h1>
+    <p class="lead">
+      Eine <strong>wunderschöne</strong> Demo-App mit viel <strong>Kreativität</strong>, die die
+      <strong>Kamera im Browser</strong> nutzt. Einfach öffnen und <b>Start</b> drücken –
+      <em>(funktioniert auf iPad, iPhone, Laptop – Kamera-Zugriff erlauben!)</em>
+    </p>
+  </section>
+
+  <!-- Bühne: Video + Canvas -->
   <main>
     <section class="stage">
       <div class="frame">
         <video id="video" autoplay playsinline></video>
         <canvas id="overlay" aria-label="Kamera-Ansicht"></canvas>
-        <div class="hint" id="hint">
+
+        <!-- Hinweis vor dem Start -->
+        <div id="hint" class="hint">
           <h2>Los geht’s!</h2>
-          <p>Tippe auf <strong>Start</strong> und erlaube den Kamerazugriff.</p>
-          <p class="small">Tipp: Stelle dich gut beleuchtet ~1–2 m vor das Gerät.</p>
+          <p>Tippe unten auf <strong>Start</strong> und erlaube den Kamerazugriff.</p>
+          <p class="small">Tipp: Gute Beleuchtung & 1–2 m Abstand helfen der Qualität.</p>
         </div>
       </div>
 
       <div class="toolbar">
         <button id="startBtn" class="btn primary">▶ Start</button>
-        <button id="stopBtn" class="btn danger" disabled>■ Stopp</button>
-        <button id="fsBtn" class="btn">⛶ Vollbild</button>
-        <button id="shotBtn" class="btn warn" disabled>📸 Foto speichern</button>
+        <button id="stopBtn"  class="btn danger"  disabled>■ Stopp</button>
+        <button id="fsBtn"    class="btn">⛶ Vollbild</button>
+        <button id="shotBtn"  class="btn warn"    disabled>📸 Foto speichern</button>
       </div>
 
       <div id="downloadFallback" class="fallback"></div>
     </section>
   </main>
 
+  <!-- Info-Karten -->
+  <section class="cards">
+    <article class="card">
+      <h3>📂 Dateien</h3>
+      <ul>
+        <li><code>index.html</code> → Struktur der Seite</li>
+        <li><code>styles.css</code> → Design / Farben</li>
+        <li><code>game.js</code> → Logik (öffnet die Kamera, zeichnet Video auf Canvas)</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>🔒 Hinweis</h3>
+      <ul>
+        <li>Läuft komplett im Browser – <b>keine Installation nötig</b>.</li>
+        <li><b>Datenschutzfreundlich:</b> Alles bleibt lokal auf deinem Gerät.</li>
+      </ul>
+    </article>
+  </section>
+
   <footer class="foot">
-    <span>© WAT gesund • läuft 100% im Browser • keine Daten werden hochgeladen</span>
+    © WAT gesund • Aktiv Hero • Made for Kids & Families
   </footer>
 
   <script src="game.js"></script>
