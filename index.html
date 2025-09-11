@@ -3,58 +3,60 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Aktiv Hero – Kamera Demo</title>
+  <title>WAT gesund – Aktiv Hero Kamera</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/logo/favicon-512.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="assets/logo/favicon-512.png">
 </head>
 <body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="WAT gesund Startseite">
+      <picture>
+        <source
+          type="image/webp"
+          srcset="assets/logo/watgesund-256.webp 256w, assets/logo/watgesund-384.webp 384w, assets/logo/watgesund-512.webp 512w, assets/logo/watgesund-768.webp 768w"
+          sizes="(max-width: 640px) 180px, 240px" />
+        <img
+          src="assets/logo/watgesund-384.jpg"
+          srcset="assets/logo/watgesund-256.jpg 256w, assets/logo/watgesund-384.jpg 384w, assets/logo/watgesund-512.jpg 512w, assets/logo/watgesund-768.jpg 768w"
+          sizes="(max-width: 640px) 180px, 240px"
+          alt="WAT gesund Logo"
+          class="brand__img"
+          decoding="async"
+          loading="eager"
+          fetchpriority="high" />
+      </picture>
+    </a>
+    <nav class="status" id="status">Bereit</nav>
+  </header>
+
   <main>
-    <h1>Aktiv Hero – Kamera Demo</h1>
-    <p>Bewege dich vor der Kamera und probiere die Buttons unten aus.</p>
+    <section class="stage">
+      <div class="frame">
+        <video id="video" autoplay playsinline></video>
+        <canvas id="overlay" aria-label="Kamera-Ansicht"></canvas>
+        <div class="hint" id="hint">
+          <h2>Los geht’s!</h2>
+          <p>Tippe auf <strong>Start</strong> und erlaube den Kamerazugriff.</p>
+          <p class="small">Tipp: Stelle dich gut beleuchtet ~1–2 m vor das Gerät.</p>
+        </div>
+      </div>
 
-    <video id="video" autoplay playsinline></video>
-    <canvas id="overlay"></canvas>
+      <div class="toolbar">
+        <button id="startBtn" class="btn primary">▶ Start</button>
+        <button id="stopBtn" class="btn danger" disabled>■ Stopp</button>
+        <button id="fsBtn" class="btn">⛶ Vollbild</button>
+        <button id="shotBtn" class="btn warn" disabled>📸 Foto speichern</button>
+      </div>
 
-    <div class="hud">
-      <button id="startBtn">Start</button>
-      <button id="stopBtn">Stopp</button>
-      <button id="fsBtn">Vollbild</button>
-      <button id="shotBtn">Foto speichern</button>
-    </div>
-
-    <div id="downloadFallback"></div>
+      <div id="downloadFallback" class="fallback"></div>
+    </section>
   </main>
+
+  <footer class="foot">
+    <span>© WAT gesund • läuft 100% im Browser • keine Daten werden hochgeladen</span>
+  </footer>
 
   <script src="game.js"></script>
 </body>
 </html>
-<header class="topbar">
-  <a class="brand" href="./" aria-label="WAT gesund Startseite">
-    <picture>
-      <!-- WebP für moderne Browser -->
-      <source
-        type="image/webp"
-        srcset="
-          assets/logo/watgesund-256.webp 256w,
-          assets/logo/watgesund-384.webp 384w,
-          assets/logo/watgesund-512.webp 512w,
-          assets/logo/watgesund-768.webp 768w"
-        sizes="(max-width: 640px) 180px, 240px" />
-      <!-- JPG als Fallback -->
-      <img
-        src="assets/logo/watgesund-384.jpg"
-        srcset="
-          assets/logo/watgesund-256.jpg 256w,
-          assets/logo/watgesund-384.jpg 384w,
-          assets/logo/watgesund-512.jpg 512w,
-          assets/logo/watgesund-768.jpg 768w"
-        sizes="(max-width: 640px) 180px, 240px"
-        alt="WAT gesund Logo"
-        class="brand__img"
-        decoding="async"
-        loading="eager"
-        fetchpriority="high" />
-    </picture>
-  </a>
-
-  <nav class="status" id="status">Bereit</nav>
-</header>
